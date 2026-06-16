@@ -1,0 +1,14 @@
+[project]
+name = "mvp-taller-mecanico"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "pandas>=2.3.3",
+    "pillow>=12.1.1",
+    "streamlit>=1.55.0",
+    "streamlit-cookies-controller>=0.0.4",
+    "supabase>=2.28.0",
+]

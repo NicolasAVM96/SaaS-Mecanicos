@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "6384a13e71a4448c",
+    "type": "split",
+    "children": [
+      {
+        "id": "1e9ccfe640405673",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "311b55c97c4214f7",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nueva pestaña"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1f855d874f8ca759",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "35f5e14566576662",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "38fe0b4004ac9b9e",
+    "type": "split",
+    "children": [
+      {
+        "id": "bb314a0ae06767d1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2ccfe0aad8b18af2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "fa8588c6e097658d",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "ec9a3c3b3400db68",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "4f19dae1120049f5",
+    "type": "split",
+    "children": [
+      {
+        "id": "c091bce70c704b90",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fabc86869e3196bb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes"
+            }
+          },
+          {
+            "id": "fd8c97e25be96e74",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes"
+            }
+          },
+          {
+            "id": "44d18c4768e8e2f5",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "0b8e1b90a4654054",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "22a46580dbd76e27",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false
+    }
+  },
+  "active": "35f5e14566576662",
+  "lastOpenFiles": [
+    "index.md.tmp.16524.c176a36861d9",
+    "index.md.tmp.16524.ba3301a18bf6",
+    "wiki/resumen.md",
+    "log.md",
+    "log.md.tmp.14480.ed65761ccdd8",
+    "index.md",
+    "index.md.tmp.14480.8720d50030e8",
+    "wiki/vhc.md",
+    "wiki/vhc.md.tmp.14480.a839888d584a",
+    "wiki/entrevistas_usuario.md",
+    "wiki/entrevistas_usuario.md.tmp.14480.8ebadbbda6d8",
+    "Bienvenido.md",
+    "wiki/roadmap.md",
+    "wiki/base_de_datos.md",
+    "wiki/arquitectura_tecnica.md",
+    "wiki/arquitectura_tecnica.md.tmp.14480.6c92190a3741",
+    "wiki/modelo_negocio.md",
+    "wiki/propuesta_valor.md",
+    "wiki/propuesta_valor.md.tmp.14480.dd5fa6d37be8",
+    "wiki/overview.md",
+    "AGENT.md",
+    "AGENT.md.tmp.14480.bd865ffec1b0",
+    "wiki",
+    "sources/VHC_inspeccion_vehicular.md",
+    "sources/historial_entrevistas_usuario.md",
+    "sources/documentacion_inicial.md",
+    "sources/estructura_base_datos.md",
+    "sources/modelo_negocio.md",
+    "sources"
+  ]
+}

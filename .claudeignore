@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# UV
+uv.lock
+
+# Virtual environments
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+#Document
+docs/
+
+# Archivos temporales del editor
+*.tmp.*
