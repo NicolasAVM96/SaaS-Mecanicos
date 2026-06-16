@@ -1,4 +1,5 @@
 from typing import Any
+import streamlit as st
 from data import database
 from utils import utils
 
@@ -85,7 +86,8 @@ def procesar_e_ingresar_servicio(
         },
     }
 
-    servicio_id = database.guardar_servicio_relacional(payload)
+    taller_id: str = st.session_state.taller_id
+    servicio_id = database.guardar_servicio_relacional(payload, taller_id)
 
     if servicio_id:
         return True, f"✅ ¡Vehículo {patente} registrado con éxito!"
@@ -105,7 +107,9 @@ def procesar_servicio_vehiculo_existente(
     if not diagnostico or not trabajo:
         return False, "❌ Por favor, completa el diagnóstico y el trabajo."
 
-    if not database.buscar_vehiculo_por_patente(patente):
+    taller_id: str = st.session_state.taller_id
+
+    if not database.buscar_vehiculo_por_patente(patente, taller_id):
         return False, "❌ Patente no encontrada en el sistema."
 
     fotos_bytes: list[bytes] = [f.getvalue() for f in fotos_raw] if fotos_raw else []
@@ -120,7 +124,7 @@ def procesar_servicio_vehiculo_existente(
         },
     }
 
-    servicio_id = database.guardar_servicio_relacional(payload)
+    servicio_id = database.guardar_servicio_relacional(payload, taller_id)
     if servicio_id:
         return True, f"✅ ¡Servicio registrado para el vehículo {patente}!"
     return False, "❌ No se pudo guardar el registro en la base de datos."

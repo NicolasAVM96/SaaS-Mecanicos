@@ -20,6 +20,9 @@ login.render_login_screen() # Protege la app. Si falla, gatilla st.stop() intern
 
 # --- Sidebar ---
 st.sidebar.write(f"Conectado: **{st.session_state.get('email', '')}**")
+rol = st.session_state.get("rol", "")
+if rol:
+    st.sidebar.caption(f"Rol: {rol}")
 
 with st.sidebar.expander("🔑 Cambiar contraseña"):
     nueva = st.text_input("Nueva contraseña", type="password", key="sb_nueva_pass")

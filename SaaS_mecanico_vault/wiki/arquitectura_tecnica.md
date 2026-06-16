@@ -1,6 +1,6 @@
 ---
 tags: [wiki, tecnico]
-updated: 2026-06-12
+updated: 2026-06-16
 sources: [sources/documentacion_inicial.md]
 ---
 
@@ -65,11 +65,12 @@ app.py inicializa
 | Patrón | Implementación |
 |---|---|
 | Imágenes | Comprimir siempre con Pillow antes de subir (máx 1080px, calidad 65%) — ver `database._comprimir_imagen()` |
-| Patentes | Buscar en `vehiculos` antes de crear — reutilizar si existe, nunca duplicar |
+| Patentes | Buscar en `vehiculos` filtrando por `taller_id` antes de crear — reutilizar si existe, nunca duplicar dentro del mismo taller |
 | Reset formulario | Incrementar `st.session_state.form_k` para forzar re-render de todos los inputs |
 | Notificaciones | `st.session_state.notificacion = {tipo, mensaje}` — se consume y limpia en `app.py` |
 | Timezone | Timestamps de Supabase llegan en UTC → convertir a `America/Santiago` para mostrar |
-| Roles | MVP: sin roles. Fase 1: tabla `perfiles` con roles `admin` / `mecanico` |
+| Multi-tenancy | `public.auth_taller_id()` — función `SECURITY DEFINER` que retorna `taller_id` del usuario autenticado; usada en todas las RLS policies |
+| Roles | Tabla `perfiles` activa con roles `admin` / `mecanico`. Actualmente todos los usuarios son `admin`. La UI muestra el rol en el sidebar. |
 
 ---
 
@@ -78,8 +79,11 @@ app.py inicializa
 | Clave | Tipo | Propósito |
 |---|---|---|
 | `autenticado` | bool | Estado de login |
-| `taller_id` | str | User ID de Supabase Auth |
+| `taller_id` | str | UUID del **taller** del usuario (leído de `perfiles`, no es el auth.uid()) |
+| `rol` | str | Rol del usuario: `'admin'` o `'mecanico'` (leído de `perfiles`) |
+| `nombre` | str | Nombre del perfil del usuario |
 | `email` | str | Email del usuario |
+| `supabase_session` | object | Sesión activa de Supabase (para update_user y cambio de contraseña) |
 | `notificacion` | dict | Toast `{tipo, mensaje}` |
 | `procesando` | bool | Deshabilita botón submit durante guardado |
 | `form_k` | int | Incrementar para resetear inputs del formulario |

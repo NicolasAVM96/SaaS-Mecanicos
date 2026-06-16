@@ -1,6 +1,6 @@
 ---
 tags: [wiki, tecnico]
-updated: 2026-06-12
+updated: 2026-06-16
 sources: [sources/estructura_base_datos.md]
 ---
 
@@ -13,6 +13,24 @@ Esquema PostgreSQL en Supabase. Organizado en fases de implementación.
 ---
 
 ## Fase MVP — Tablas actuales
+
+### `talleres` (tabla raíz multi-tenant) ✅ implementada
+| Campo | Tipo | Notas |
+|---|---|---|
+| id | uuid | PK, gen_random_uuid() |
+| nombre_taller | varchar(150) | |
+| fecha_creacion | timestamp | default now() |
+| limite_usuarios | integer | default 3 |
+
+### `perfiles` (extiende auth.users) ✅ implementada
+| Campo | Tipo | Notas |
+|---|---|---|
+| id | uuid | PK, FK → auth.users.id (cascade) |
+| taller_id | uuid | FK → talleres.id |
+| nombre | varchar(100) | |
+| rol | varchar(20) | Check: 'admin' o 'mecanico' |
+
+> Por ahora todos los usuarios creados manualmente tienen `rol = 'admin'` y son dueños de su propio taller. El rol `mecanico` se activará en Fase 1.
 
 ### `fotos_servicios`
 Evidencia fotográfica vinculada a un servicio.
@@ -27,7 +45,7 @@ Evidencia fotográfica vinculada a un servicio.
 | Campo | Tipo | Notas |
 |---|---|---|
 | id | uuid | PK |
-| taller_id | uuid | FK → talleres.id |
+| taller_id | uuid | FK → talleres.id NOT NULL ✅ |
 | nombre_completo | varchar(150) | |
 | telefono | varchar(20) | |
 | email | varchar(100) | Nullable |
@@ -37,13 +55,14 @@ Evidencia fotográfica vinculada a un servicio.
 |---|---|---|
 | id | uuid | PK |
 | cliente_id | uuid | FK → clientes.id |
-| patente | varchar(10) | Indexada de forma única por taller |
+| taller_id | uuid | FK → talleres.id NOT NULL ✅ |
+| patente | varchar(10) | Índice único compuesto `(patente, taller_id)` ✅ |
 | marca, modelo, color | varchar | |
 | n_chasis, n_motor | varchar(50) | Nullable |
 | ano | integer | Nullable |
 | kilometraje | integer | |
 
-> ⚠️ La patente está indexada por taller — no se crean duplicados. La lógica está en `database.guardar_servicio_relacional()`.
+> ⚠️ La patente es única POR taller — dos talleres distintos pueden tener el mismo vehículo. La lógica de deduplicación está en `database.guardar_servicio_relacional()`.
 
 ### `servicios`
 Historial operativo de ingresos y órdenes de trabajo (OT). Aquí se engancha el [[vhc]].
@@ -51,30 +70,20 @@ Historial operativo de ingresos y órdenes de trabajo (OT). Aquí se engancha el
 |---|---|---|
 | id | uuid | PK |
 | vehiculo_id | uuid | FK → vehiculos.id |
+| taller_id | uuid | FK → talleres.id NOT NULL ✅ |
 | diagnostico | text | |
 | trabajo_a_realizar | text | |
 | fecha_ingreso | timestamp | default now() |
 | fecha_entrega | timestamp | Nullable |
 
+### RLS multi-tenant ✅ implementado
+Todas las tablas operativas filtran por `taller_id = auth_taller_id()`.
+- `public.auth_taller_id()` — función helper `SECURITY DEFINER` que retorna el `taller_id` del usuario autenticado leyendo `perfiles`
+- `fotos_servicios` se aísla via subquery a `servicios` (no necesita `taller_id` propio)
+
 ---
 
 ## Fase 1 — Nuevas tablas
-
-### `talleres` (tabla raíz multi-tenant)
-| Campo | Tipo | Notas |
-|---|---|---|
-| id | uuid | PK, gen_random_uuid() |
-| nombre_taller | varchar(150) | |
-| fecha_creacion | timestamp | default now() |
-| limite_usuarios | integer | default 3 |
-
-### `perfiles` (extiende auth.users)
-| Campo | Tipo | Notas |
-|---|---|---|
-| id | uuid | PK, FK → auth.users.id (cascade) |
-| taller_id | uuid | FK → talleres.id |
-| nombre | varchar(100) | |
-| rol | varchar(20) | Check: 'admin' o 'mecanico' |
 
 ### `vhc_plantillas`
 Formularios dinámicos de inspección definidos por cada taller.
@@ -113,7 +122,7 @@ Trigger automático en PostgreSQL — cada modificación genera una fila.
 | datos_anteriores | jsonb | Estado previo del registro |
 
 ### Modificaciones a tablas existentes (Fase 1)
-- `clientes`, `vehiculos`, `servicios` agregan `taller_id` (FK → talleres.id)
+- ~~`clientes`, `vehiculos`, `servicios` agregan `taller_id` (FK → talleres.id)~~ → **ya implementado en MVP**
 - `servicios` agrega: `mecanico_id`, `presupuesto_estimado`, `estado`, `autorizado_por_jefe`
 
 ---

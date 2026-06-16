@@ -34,8 +34,9 @@ def render_registro_tab() -> None:
 def _buscar_patente_callback() -> None:
     k = st.session_state.form_k
     patente = st.session_state.get(f"exist_patente_{k}", "").upper().strip()
+    taller_id = st.session_state.get("taller_id")
     if patente:
-        st.session_state.vehiculo_buscado = database.buscar_vehiculo_por_patente(patente)
+        st.session_state.vehiculo_buscado = database.buscar_vehiculo_por_patente(patente, taller_id)
     else:
         st.session_state.vehiculo_buscado = None
 

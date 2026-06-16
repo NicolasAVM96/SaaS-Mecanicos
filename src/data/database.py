@@ -32,26 +32,27 @@ def _comprimir_imagen(foto_bytes: bytes) -> bytes:
     img.save(buf, format="JPEG", quality=FOTO_QUALITY, optimize=True)
     return buf.getvalue()
 
-def buscar_vehiculo_por_patente(patente: str) -> dict | None:
+def buscar_vehiculo_por_patente(patente: str, taller_id: str) -> dict | None:
     res = (
         supabase.table("vehiculos")
         .select("*, clientes(nombre_completo, rut, email, telefono, direccion)")
         .eq("patente", patente.upper().strip())
+        .eq("taller_id", taller_id)
         .execute()
     )
     return res.data[0] if res.data else None
 
 
-def guardar_servicio_relacional(payload: dict[str, Any]) -> str | None:
+def guardar_servicio_relacional(payload: dict[str, Any], taller_id: str) -> str | None:
     cliente_data: dict = payload["cliente"]
     vehiculo_data: dict = payload["vehiculo"]
     servicio_data: dict = payload["servicio"]
     fotos_bytes: list[bytes] = servicio_data.pop("fotos_bytes", [])
 
     try:
-        # 1. Verificar si la patente ya existe
+        # 1. Verificar si la patente ya existe en ESTE taller
         patente: str = vehiculo_data["patente"]
-        existente = supabase.table("vehiculos").select("id").eq("patente", patente).execute()
+        existente = supabase.table("vehiculos").select("id").eq("patente", patente).eq("taller_id", taller_id).execute()
 
         if existente.data:
             vehiculo_id: str = existente.data[0]["id"]
@@ -59,13 +60,14 @@ def guardar_servicio_relacional(payload: dict[str, Any]) -> str | None:
                 supabase.table("vehiculos").update({"kilometraje": vehiculo_data["kilometraje"]}).eq("id", vehiculo_id).execute()
         else:
             # 2. Crear cliente
-            cliente_res = supabase.table("clientes").insert(cliente_data).execute()
+            cliente_res = supabase.table("clientes").insert({**cliente_data, "taller_id": taller_id}).execute()
             cliente_id: str = cliente_res.data[0]["id"]
 
             # 3. Crear vehículo vinculado al cliente
             vehiculo_res = supabase.table("vehiculos").insert({
                 **vehiculo_data,
-                "cliente_id": cliente_id
+                "cliente_id": cliente_id,
+                "taller_id": taller_id,
             }).execute()
             vehiculo_id = vehiculo_res.data[0]["id"]
 
@@ -74,6 +76,7 @@ def guardar_servicio_relacional(payload: dict[str, Any]) -> str | None:
             "vehiculo_id": vehiculo_id,
             "diagnostico": servicio_data["diagnostico"],
             "trabajo_a_realizar": servicio_data["trabajo_a_realizar"],
+            "taller_id": taller_id,
         }).execute()
         servicio_id: str = servicio_res.data[0]["id"]
 
