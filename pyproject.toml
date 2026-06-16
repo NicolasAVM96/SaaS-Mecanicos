@@ -1,7 +1,7 @@
 [project]
 name = "mvp-taller-mecanico"
 version = "0.1.0"
-description = "Add your description here"
+description = "SaaS para gestión de talleres mecánicos"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -12,3 +12,11 @@ dependencies = [
     "streamlit-cookies-controller>=0.0.4",
     "supabase>=2.28.0",
 ]
+
+# 💡 AGREGA ESTAS LÍNEAS AL FINAL PARA INFORMARLE A LA NUBE QUE ES UN PROYECTO DE UV
+[tool.uv]
+managed = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
